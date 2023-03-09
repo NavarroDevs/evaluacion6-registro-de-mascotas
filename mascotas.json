@@ -1,0 +1,28 @@
+{
+    "mascotas": [
+        {
+            "id": "8e8f90",
+            "nombre": "rayito",
+            "propietario": {
+                "run": "2472333-9",
+                "nombre": "pedro"
+            }
+        },
+        {
+            "id": "1fa747",
+            "nombre": "estrellita",
+            "propietario": {
+                "run": "12333-5",
+                "nombre": "altagracia"
+            }
+        },
+        {
+            "id": "3beb8a",
+            "nombre": "claudia",
+            "propietario": {
+                "run": "264433-4",
+                "nombre": "beatriz"
+            }
+        }
+    ]
+}

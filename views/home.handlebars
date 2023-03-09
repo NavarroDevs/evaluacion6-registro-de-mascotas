@@ -1,0 +1,391 @@
+
+<section class="mt-5">
+    <h2 class = "text-center">Datos de Registros de las Mascotas</h2>
+<br>
+<br>
+
+
+
+
+<div class="container">
+   <center>
+<div class="mb-3">
+<a href="/mostrarTodas" class="btn btn-primary mt-3 ">Mostrar todas las Mascotas</a>
+</div>
+
+
+<div class="mb-3">
+
+<a href="/nueva_mascota" class="btn btn-primary mt-3">Ingresar una nueva Moscota</a>
+
+</center> 
+</div>
+<br>
+
+
+
+<form id="buscarporNombre">
+        <div class="mb-3">
+            <center>
+
+        <div class="mb-3">
+            <label for="" class="form-label"  >Mostrar datos ingresando Nombre de la mascota</label>
+            <input type="text" size="4" class="form-control" name="buscarnombre" id="buscar1" placeholder="ingrese nombre mascota"required>
+            <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+       </center>
+        </div>
+</form>
+
+<br>
+
+
+<form id="buscarporRut">
+        <div class="mb-3">
+<center>
+        <div class="mb-3">
+            <label for="" class="form-label">Mostrar datos ingresando Rut del dueño</label>
+            <input type="text" class="form-control" name="buscarrut" id="buscarporrut3" placeholder="ingrese rut del dueño"required>
+            <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+       
+ </center>
+        </div>
+</form>
+
+
+
+
+
+
+
+{{!-- buscar por nombre--}}
+<script>
+    //se crea la funcion eliminar mascota
+    const formulariobuscarnombre = document.querySelector('#buscarporNombre');
+    formulariobuscarnombre.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let mascota6 = document.querySelector('#buscar1')
+       
+
+        fetch("http://localhost:3000/mascotas/" +  mascota6.value, {
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                   alert(data.message)
+                   
+                   //alert("No Existe la Mascota")
+                     //location.href = "/"
+                } else {
+                  alert("Mascota Encontrada.")
+
+                  location.href = "/mostrarporNombre/"+ mascota6.value
+                }
+            })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+
+    })
+
+
+    const leerMascotas = (nombre) => {
+    console.log(nombre)
+                //realizarmos una peticion fetch al endpoint con la url
+        fetch("http://localhost:3000/mascotas/"  + nombre, {
+            method: "get"
+            
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                    alert(result.message)
+                
+                } else {
+                    alert("Mascota encontrada.")
+                    
+                    location.href = "/mostrarporNombre/"  + nombre
+                  
+                  
+                }
+       })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+       
+       //se rescata el valor del nombre
+        // let nombre = document.querySelector('#mascota').value;
+
+    };
+</script>
+
+
+
+
+
+
+<form id="eliminarMascota">
+        <div class="mb-3">
+<center>
+        <div class="mb-3">
+            <label for="" class="form-label">Eliminar mascota por nombre de mascota</label>
+            <input type="text"  class="form-control" name="mascota" id="mascota" placeholder="ingrese nombre mascota"
+                required>
+            <div>
+            </div>
+            <button type="submit" class="btn btn-danger m-3">Eliminar</button>
+       
+       </center>
+        </div>
+</form>
+
+<form id="eliminarMascota2">
+        <div>
+            <center>
+            <label for="" class="form-label">Eliminar mascota por rut del dueño</label>
+            <input type="text" class="form-control" name="mascota2" id="mascota2" size="20" placeholder="ingrese el rut del dueño" required>
+            <button type="submit" class="btn btn-danger m-3">Eliminar</button>
+        </center>
+        </div>
+ </form>         
+
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+    //se crea la funcion eliminar mascota
+    const formulariobuscarrut = document.querySelector('#buscarporRut');
+    formulariobuscarrut.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let mascota5 = document.querySelector('#buscarporrut3')
+        console.log(mascota5);
+
+        fetch("http://localhost:3000/mascotas/propietario/" +  mascota5.value, {
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                   alert(result.message)
+                } else {
+                  alert("Dueño encontrado.")
+
+                  
+                   location.href = "/mostrarporRut/" + mascota5.value
+                }
+            })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+
+    })
+
+
+    const leerMascotasPorRut = (run) => {
+    console.log(run)
+                //realizarmos una peticion fetch al endpoint con la url
+        fetch("http://localhost:3000/mascotas/propietario/"  + run, {
+            method: "get"
+            
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                    alert(result.message)
+
+                } else {
+                    alert("Mascota encontrada.")
+                    
+                   // location.href = "/mostrarporRut/" + run
+                }
+       })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+       
+       //se rescata el valor del nombre
+        // let nombre = document.querySelector('#mascota').value;
+
+    };
+</script>
+
+
+
+
+
+
+{{!-- buscar por rut--}}
+<script>
+    //se crea la funcion eliminar mascota
+    const formulariobuscarrut = document.querySelector('#buscarporRut');
+    formulariobuscarrut.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let mascota5 = document.querySelector('#buscarporrut3')
+        console.log(mascota5);
+
+        fetch("http://localhost:3000/mascotas/propietario/" +  mascota5.value, {
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                     alert(result.message)
+                  
+                } else {
+                  alert("Dueño encontrado.")
+                  location.href = "/mostrarporRut/" + mascota5.value
+                }
+            })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+
+    })
+
+
+    const leerMascotasPorRut = (run) => {
+    console.log(run)
+                //realizarmos una peticion fetch al endpoint con la url
+        fetch("http://localhost:3000/mascotas/propietario/"  + run, {
+            method: "get"
+            
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                    alert(result.message)
+                   
+                     location.href = "/"
+                } else {
+                    alert("Mascota encontrada.")
+                    
+                   // location.href = "/mostrarporRut/" + run
+                }
+       })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+       
+       //se rescata el valor del nombre
+        // let nombre = document.querySelector('#mascota').value;
+
+    };
+</script>
+
+
+
+
+
+
+{{!-- eliminar mascota por nombre --}}
+<script>
+    //se crea la funcion eliminar mascota
+    const formulario = document.querySelector('#eliminarMascota');
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let mascota = document.querySelector('#mascota')
+
+        fetch("http://localhost:3000/mascotas/" + mascota.value, {
+            method: "delete"
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                    alert(result.message)
+                    
+                     location.href = "/"
+                } else {
+                    alert("Mascota eliminada.")
+                    location.href = "/"
+                }
+            })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+
+    })
+
+
+    const eliminarMascota = (nombre) => {
+    
+                //realizarmos una peticion fetch al endpoint con la url
+        fetch("http://localhost:3000/mascotas/" + nombre, {
+            method: "delete"
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                    alert(result.message)
+                   
+                     location.href = "/"
+                } else {
+                    alert("Mascota eliminada.")
+                    location.href = "/"
+                }
+            })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+
+ 
+        //se rescata el valor del nombre
+        // let nombre = document.querySelector('#mascota').value;
+
+    };
+</script>
+
+
+{{!-- eliminar mascota por run --}}
+<script>
+    //se crea la funcion eliminar mascota
+    const formulario2 = document.querySelector('#eliminarMascota2');
+    formulario2.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let mascota2 = document.querySelector('#mascota2')
+        console.log(mascota2)
+
+        fetch("http://localhost:3000/mascotas/propietario/" + mascota2.value, {
+            method: "delete"
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                    alert(result.message)
+                    
+                } else {
+                    alert("Mascota eliminada.")
+                    location.href = "/"
+                }
+            })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+
+    })
+
+
+    const eliminarMascotaPorRun = (run) => {
+    
+                //realizarmos una peticion fetch al endpoint con la url
+        fetch("http://localhost:3000/mascotas/propietario/" + run, {
+            method: "delete"
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code != 200) {
+                    alert(result.message)
+                   
+                } else {
+                    alert("Mascota eliminada.")
+                    location.href = "/"
+                }
+            })
+            //en caso de error imprimimos el error
+            .catch((error) => console.log("error", error));
+
+    };
+</script>
+

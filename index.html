@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <title>Inventario Macotas</title>
+    <style></style>
+</head>
+
+<body>
+    <main class="container">
+        <h1 class="text-center mt-5">REGISTRO DE MASCOTAS.</h1>
+
+        <section>
+            <form id="api_crud_form" action="/mascotas" method="post" id="formularioMascotas"
+                class="row g-3 needs-validation" novalidate>
+                <label input name="titulo" for="nombre" class="form-label">Nombre de Mascota:</label>
+                <input type="text" name="nombre" class="form-control" id="nombre" value="nombre mascota" required />
+                <div class="valid-feedback">Todo bien</div>
+                <div class="invalid-feedback">Es necesario colocar el nombre</div>
+
+                <label input name="titulo" for="nombreDueño" class="form-label">Nombre del dueño:</label>
+                <input type="text" name="nombre" class="form-control" id="nombreDueño" value="nombre dueño" required />
+                <div class="valid-feedback">Todo bien</div>
+                <div class="invalid-feedback">Es necesario colocar el nombre</div>
+
+                <label for="rut" class="form-label">Rut del dueño:</label>
+                <input type="text" name="rut" id="rut" class="form-control" min="0" value="2764565-5" required />
+                <div class="valid-feedback">Todo bien</div>
+                <div class="invalid-feedback">Es necesario colocar el rut</div>
+
+                <button type="button" id="btnAgregar" class="btn btn-primary mt-3">
+                    Agregar
+                </button>
+                <button type="button" id="btnMostrar" class="btn btn-primary mt-3">
+                    Mostrar todas las Mascotas
+                </button>
+                <button type="button" id="btnMostrarnombre" class="btn btn-primary mt-3">
+                    Mostrar mascotas ingresando el nombre
+                </button>
+
+                <button type="button" id="btnEliminar2" class="btn btn-primary mt-3"
+                    onclick="eliminarMascotarut ('nombrest')">
+                    Eliminar Mascota por rut del dueño
+                </button>
+
+                <button type="button" id="btnEliminar1" class="btn btn-primary mt-3"
+                    onclick="eliminarMascota('nombrest')">
+                    Eliminar Mascota por Nombre
+                </button>
+            </form>
+        </section>
+
+        <!-- validar el formulario -->
+        <script>
+            // Ejemplo de JavaScript inicial para deshabilitar el envío de formularios si hay campos no válidos
+            (function () {
+                "use strict";
+
+                // Obtener todos los formularios a los que queremos aplicar estilos de validación de Bootstrap personalizados
+                var forms = document.querySelectorAll(".needs-validation");
+
+                // Bucle sobre ellos y evitar el envío
+                Array.prototype.slice.call(forms).forEach(function (form) {
+                    form.addEventListener(
+                        "button",
+                        function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+
+                            form.classList.add("was-validated");
+                        },
+                        false
+                    );
+                });
+            })();
+        </script>
+        <!-- TABLA CON DATOS -->
+        <section>
+            <h2 class="text-center mt-5">LISTADO DE MASCOTAS</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre de la mascota</th>
+                        <th scope="col">Nombre del dueño</th>
+                        <th scope="col">Rut del Dueño</th>
+                    </tr>
+                </thead>
+                <tbody id="datosMascotas"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        let formulario = document.querySelector("#formularioMascotas");
+
+        const getMascotas = async () => {
+            let response = await fetch("/mascotas");
+            let data = await response.json();
+            return data.mascotas;
+        };
+
+
+
+       getMascotas();
+        const pintarTabla = (mascotas) => {
+            let cuerpoTabla = document.querySelector("#datosMascotas");
+
+            cuerpoTabla.innerHTML = "";
+            let template = "";
+            mascotas.forEach((mascota) => {
+                template += `
+                    <tr>
+                        <td>${mascota.nombre}</td>
+                        <td>${mascota.propietario.nombre}</td>
+                        <td>${mascota.rut}</td>
+                        
+                        
+                    </tr>
+
+                   
+                                `;
+            });
+
+            cuerpoTabla.innerHTML = template;
+        };
+
+        document.querySelector("#btnAgregar").addEventListener("click", () => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const raw = JSON.stringify({
+                nombre: nombre.value,
+                rut: rut.value,
+            });
+
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+            };
+
+            fetch("/mascotas", requestOptions)
+                .then((response) => response.json())
+                // .then(result => {
+
+                //     pintarTabla(result.mascotas);
+
+                // })
+                .catch((error) => console.log("error", error));
+        });
+
+        const eliminarMascota = () => {
+            let nombre = document.querySelector("#nombre").value;
+
+            fetch("/mascotas/" + nombre, {
+                method: "DELETE",
+            })
+
+            fetch("http://localhost:3000/mascotas/garfiel", requestOptions)
+            
+                .then((response) => response.json())
+                .then((result) => {
+                    pintarTabla(result.mascotas);
+                })
+                .catch((error) => console.log("error", error));
+        };
+
+        const eliminarMascotarut = () => {
+            let rut = document.querySelector("#rut").value;
+            console.log(rut);
+            fetch("/mascotas/" + rut, {
+                method: "DELETE",
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    pintarTabla(result.mascotas);
+                })
+                .catch((error) => console.log("error", error));
+        };
+
+        document.querySelector("#btnMostrar").addEventListener("click", () => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const raw = JSON.stringify({
+                nombre: nombre.value,
+                rut: rut.value,
+            });
+
+            fetch("/mascotas")
+                .then((response) => response.json())
+                .then((result) => {
+                    pintarTabla(result.mascotas);
+                })
+                .catch((error) => console.log("error", error))
+        });
+
+        const main = async () => {
+            try {
+                formulario.addEventListener("submit", (event) =>
+                    event.preventDefault()
+                );
+
+                let mascotas = await getMascotas();
+
+                // pintarTabla(mascotas);
+            } catch (error) {
+                alert("Ha ocurrido un error al cargar las mascoticas.");
+            }
+        };
+
+        main();
+    </script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
